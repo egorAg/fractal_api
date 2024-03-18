@@ -15,4 +15,6 @@ export abstract class PostRepository {
     topics: TopicEntity[],
     systems: SystemEntity[],
   ): Promise<void>;
+
+  abstract getById(id: string): Promise<Post | null>;
 }

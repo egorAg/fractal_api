@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { CommentEntity } from 'src/comments/infrastructure/relational/entities/comment.entity';
 import { SystemEntity } from 'src/system/infrastructure/relational/entities/system.entity';
 import { TopicEntity } from 'src/topics/infrastructure/relational/entities/topic.entity';
 import {
@@ -8,6 +8,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -41,9 +42,11 @@ export class PostEntity extends BaseEntity {
   @CreateDateColumn()
   created_at: Date;
 
-  @Exclude()
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  comments?: CommentEntity[];
 
   @ManyToMany(() => TopicEntity, (topic) => topic.posts)
   @JoinTable()

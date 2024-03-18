@@ -1,4 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { Post } from 'src/posts/domain/post';
 import { SystemEntity } from 'src/system/infrastructure/relational/entities/system.entity';
 import { TopicEntity } from 'src/topics/infrastructure/relational/entities/topic.entity';
 import { Repository } from 'typeorm';
@@ -11,6 +12,19 @@ export class PostRelationsRepository implements PostRepository {
     @InjectRepository(PostEntity)
     private readonly postRepo: Repository<PostEntity>,
   ) {}
+
+  async getById(id: string): Promise<Post | null> {
+    const data = await this.postRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!data) {
+      return null;
+    }
+    return PostMapper.toDomain(data);
+  }
 
   async searchPosts(
     page: number,

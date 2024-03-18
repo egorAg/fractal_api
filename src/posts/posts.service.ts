@@ -36,4 +36,8 @@ export class PostsService {
     const transf = systems.map((sys) => SystemMapper.toPrecision(sys));
     await this.postRepository.create(transformed, transf);
   }
+
+  public async getPostById(id: string) {
+    return this.postRepository.getById(id);
+  }
 }
