@@ -16,6 +16,7 @@ import { UserModule } from './user/user.module';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { SystemModule } from './system/system.module';
+import { ContentModule } from './content/content.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { SystemModule } from './system/system.module';
     PostsModule,
     CommentsModule,
     SystemModule,
+    ContentModule,
   ],
   controllers: [],
   providers: [],
