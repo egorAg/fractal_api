@@ -1,0 +1,35 @@
+{
+  "name": "fractal-admin",
+  "version": "1.0.0",
+  "description": "the admin board for fractal system",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node --env-file=.env dist/index.js"
+  },
+  "author": "Egor Ageev",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "@adminjs/design-system": "^4.1.1",
+    "@adminjs/express": "^6.1.0",
+    "@adminjs/passwords": "^4.0.0",
+    "@adminjs/relations": "^1.1.2",
+    "@adminjs/themes": "^1.0.1",
+    "@adminjs/typeorm": "^5.0.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.29",
+    "adminjs": "^7.7.3",
+    "bcrypt": "^5.1.1",
+    "connect-pg-simple": "^9.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.18.0",
+    "react": "^18.2.0",
+    "styled-components": "^6.1.8",
+    "typeorm": "^0.3.20"
+  }
+}
