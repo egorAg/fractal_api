@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { Comment } from './domain/comment';
 
 @ApiTags('Comments')
 @Controller({ path: 'comments', version: '1' })
@@ -16,7 +25,11 @@ export class CommentsController {
     description: 'Set the post ID here',
     example: 'some uuid',
   })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
   @Post(':postId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   public async create(
     @Param('postId') id: string,
     @Body() payload: CreateCommentDto,
@@ -32,6 +45,9 @@ export class CommentsController {
     name: 'postId',
     description: 'Set the post ID here',
     example: 'some uuid',
+  })
+  @ApiResponse({
+    type: [Comment],
   })
   @Get(':postId')
   public async getByPost(@Param('postId') id: string) {

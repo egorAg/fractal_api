@@ -10,7 +10,7 @@ export const locale = {
                 "show": "Показать",
                 "delete": "Удалить",
                 "bulkDelete": "Удалить всех",
-                "list": "Показать списком"
+                "list": "Список"
             },
             "buttons": {
                 "save": "Сохранить",

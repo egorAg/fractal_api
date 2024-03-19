@@ -9,7 +9,9 @@ export class AuthRegisterLoginDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'qweQWE123!',
+  })
   @MinLength(6)
   password: string;
 

@@ -1,5 +1,7 @@
 import { UserEntity } from "../entities/user.entity.js";
 import passwordsFeature from "@adminjs/passwords";
+import { loader } from "../components/index.js";
+import bcrypt from "bcrypt";
 
 const user = {
   resource: UserEntity,
@@ -21,6 +23,15 @@ const user = {
       },
     },
   },
+  features: [
+    passwordsFeature({
+      componentLoader: loader,
+      properties: {
+        encryptedPassword: 'password',
+        password: 'newPassword'
+      },
+      hash: (p) => bcrypt.hashSync(p, 10),
+    })]
 };
 
 export default user;

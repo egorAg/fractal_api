@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SearchPostsDto } from './dto/search-posts.dto';
 import { PostsService } from './posts.service';
+import { Post as PostDomain } from './domain/post';
 
 @ApiTags('Posts')
 @Controller({ path: 'posts', version: '1' })
@@ -11,6 +12,9 @@ export class PostsController {
   @ApiOperation({
     summary: 'Get all posts',
     description: 'Get all posts, with filters and pagination',
+  })
+  @ApiResponse({
+    type: [PostDomain],
   })
   @Post('search')
   async searchPosts(@Body() searchPostsDto: SearchPostsDto) {
@@ -23,10 +27,5 @@ export class PostsController {
       searchPostsDto.topicId,
       searchPostsDto.name,
     );
-  }
-
-  @Get('create')
-  public async create() {
-    await this.postService.create();
   }
 }

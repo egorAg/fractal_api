@@ -40,3 +40,4 @@
 /packages/*/yarn-error.log*
 /packages/*/lerna-debug.log*
 /packages/*/yarn.lock
+/packages/admin/.adminjs/*

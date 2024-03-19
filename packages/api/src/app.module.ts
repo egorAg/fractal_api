@@ -40,7 +40,7 @@ import { UserModule } from './user/user.module';
     PostsModule,
     CommentsModule,
     SystemModule,
-    ContentModule
+    ContentModule,
   ],
 })
 export class AppModule {}

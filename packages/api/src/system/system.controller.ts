@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SystemService } from './system.service';
+import { System } from './domain/system';
 
 @ApiTags('System')
 @Controller({
@@ -12,6 +13,9 @@ export class SystemController {
   @ApiOperation({
     summary: 'All systems',
     description: 'Get all registered systems',
+  })
+  @ApiResponse({
+    type: System,
   })
   @Get()
   public async getAll() {

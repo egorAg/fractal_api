@@ -7,7 +7,7 @@ import {
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { AllConfigType } from 'src/config/config.type';
 import { Session } from 'src/session/domain/session';
@@ -214,71 +214,58 @@ export class AuthService {
     userJwtPayload: JwtPayloadType,
     userDto: AuthUpdateDto,
   ): Promise<NullableType<User>> {
-    // if (userDto.password) {
-    //   if (!userDto.oldPassword) {
-    //     throw new HttpException(
-    //       {
-    //         status: HttpStatus.UNPROCESSABLE_ENTITY,
-    //         errors: {
-    //           oldPassword: 'missingOldPassword',
-    //         },
-    //       },
-    //       HttpStatus.UNPROCESSABLE_ENTITY,
-    //     );
-    //   }
+    const currentUser = await this.usersService.findOne({
+      id: userJwtPayload.id,
+    });
 
-    // const currentUser = await this.usersService.findOne({
-    //   id: userJwtPayload.id,
-    // });
+    if (!currentUser) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            user: 'userNotFound',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
-    // if (!currentUser) {
-    //   throw new HttpException(
-    //     {
-    //       status: HttpStatus.UNPROCESSABLE_ENTITY,
-    //       errors: {
-    //         user: 'userNotFound',
-    //       },
-    //     },
-    //     HttpStatus.UNPROCESSABLE_ENTITY,
-    //   );
-    // }
+    if (!currentUser.password) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            oldPassword: 'incorrectOldPassword',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
-    // if (!currentUser.password) {
-    //   throw new HttpException(
-    //     {
-    //       status: HttpStatus.UNPROCESSABLE_ENTITY,
-    //       errors: {
-    //         oldPassword: 'incorrectOldPassword',
-    //       },
-    //     },
-    //     HttpStatus.UNPROCESSABLE_ENTITY,
-    //   );
-    // }
-
-    // const isValidOldPassword = await bcrypt.compare(
-    //   userDto.oldPassword,
-    //   currentUser.password,
-    // );
-
-    // if (!isValidOldPassword) {
-    //   throw new HttpException(
-    //     {
-    //       status: HttpStatus.UNPROCESSABLE_ENTITY,
-    //       errors: {
-    //         oldPassword: 'incorrectOldPassword',
-    //       },
-    //     },
-    //     HttpStatus.UNPROCESSABLE_ENTITY,
-    //   );
-    // } else {
-    //   await this.sessionService.softDelete({
-    //     user: {
-    //       id: currentUser.id,
-    //     },
-    //     excludeId: userJwtPayload.sessionId,
-    //   });
-    // }
-    // }
+    if (userDto.password && userDto.newPassword) {
+      const isValidOldPassword = await bcrypt.compare(
+        userDto.password,
+        currentUser.password,
+      );
+      if (!isValidOldPassword) {
+        throw new HttpException(
+          {
+            status: HttpStatus.UNPROCESSABLE_ENTITY,
+            errors: {
+              oldPassword: 'incorrectOldPassword',
+            },
+          },
+          HttpStatus.UNPROCESSABLE_ENTITY,
+        );
+      } else {
+        await this.sessionService.softDelete({
+          user: {
+            id: currentUser.id,
+          },
+          excludeId: userJwtPayload.sessionId,
+        });
+      }
+    }
 
     await this.usersService.update(userJwtPayload.id, userDto);
 

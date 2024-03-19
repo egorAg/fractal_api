@@ -12,7 +12,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { User } from 'src/user/domain/user';
 import { NullableType } from '../utils/types/nullable.type';
 import { AuthService } from './auth.service';
@@ -22,6 +28,21 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 import { LoginResponseType } from './types/login-response.type';
+
+class TokenResponse {
+  @ApiProperty({
+    example: 'some.jwt.toke',
+  })
+  access: string;
+  @ApiProperty({
+    example: 'some.jwt.toke',
+  })
+  refresh_token: string;
+  @ApiProperty({
+    example: '12h',
+  })
+  tokenExpiresIn: string;
+}
 
 @ApiTags('Auth')
 @Controller({
@@ -42,6 +63,10 @@ export class AuthController {
     return this.service.validateLogin(loginDto);
   }
 
+  @ApiOperation({
+    summary: 'Register',
+    description: 'Register new user, returns no content',
+  })
   @Post('signup')
   @HttpCode(HttpStatus.NO_CONTENT)
   async register(
@@ -67,6 +92,14 @@ export class AuthController {
   //   );
   // }
 
+  @ApiOperation({
+    summary: 'User info',
+    description: 'Return the authorized user',
+  })
+  @ApiResponse({
+    type: User,
+    status: HttpStatus.OK,
+  })
   @ApiBearerAuth()
   @SerializeOptions({
     groups: ['me'],
@@ -78,6 +111,15 @@ export class AuthController {
     return this.service.me(request.user);
   }
 
+  @ApiOperation({
+    summary: 'Refresh access token',
+    description:
+      'Check does user session is active, if true - return the token',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: TokenResponse,
+  })
   @ApiBearerAuth()
   @SerializeOptions({
     groups: ['me'],
@@ -92,6 +134,13 @@ export class AuthController {
     });
   }
 
+  @ApiOperation({
+    summary: 'Logout',
+    description: 'logout',
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
   @ApiBearerAuth()
   @Post('logout')
   @UseGuards(AuthGuard('jwt'))
@@ -100,10 +149,18 @@ export class AuthController {
     console.log(user);
 
     // await this.service.logout({
-    //   sessionId: user.sessionId,
+    //   sessionId: user.,
     // });
   }
 
+  @ApiOperation({
+    description:
+      'Update user partially, for updating the password, please, send old and new one',
+    summary: 'Update',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+  })
   @ApiBearerAuth()
   @SerializeOptions({
     groups: ['me'],
@@ -118,6 +175,13 @@ export class AuthController {
     return this.service.update(request.user, userDto);
   }
 
+  @ApiOperation({
+    description: 'Delete user account',
+    summary: 'Delete',
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
   @ApiBearerAuth()
   @Delete('me')
   @UseGuards(AuthGuard('jwt'))

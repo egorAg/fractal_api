@@ -22,6 +22,6 @@ export class ContentService {
   }
 
   public async getByPattern(name: string) {
-    return this.getByPattern(name);
+    return this.contentRepository.getByName(name);
   }
 }
