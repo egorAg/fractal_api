@@ -5,9 +5,18 @@ services:
     container_name: fractal_api
     build:
       dockerfile: Dockerfile
-      context: ..
+      context: ../packages/api
     ports:
-      - '80:${API_PORT:-3000}'
+      - '3000:${API_PORT:-3000}'
+    depends_on:
+      - postgres
+  admin:
+    container_name: fractal_admin
+    build:
+      dockerfile: Dockerfile
+      context: ../packages/admin
+    ports:
+      - '80:${ADMIN_PORT:-3001}'
     depends_on:
       - postgres
   postgres:

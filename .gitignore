@@ -3,13 +3,7 @@
 /node_modules
 
 # Logs
-logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+
 
 # OS
 .DS_Store
@@ -36,3 +30,13 @@ lerna-debug.log*
 
 /docker/.env
 /docker/data
+/packages/*/node_modules
+/packages/*/dist
+/packages/*/logs
+/packages/*/*.log
+/packages/*/npm-debug.log*
+/packages/*/pnpm-debug.log*
+/packages/*/yarn-debug.log*
+/packages/*/yarn-error.log*
+/packages/*/lerna-debug.log*
+/packages/*/yarn.lock
