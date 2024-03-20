@@ -267,7 +267,7 @@ export class AuthService {
       }
     }
 
-    await this.usersService.update(userJwtPayload.id, userDto);
+    await this.usersService.update(currentUser.id, userDto);
 
     return this.usersService.findOne({
       id: userJwtPayload.id,

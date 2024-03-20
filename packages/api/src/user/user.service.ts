@@ -14,7 +14,10 @@ export class UsersService {
   constructor(private readonly usersRepository: UserRepository) {}
 
   async create(createProfileDto: CreateUserDto): Promise<User> {
-    const clonedPayload: Omit<User, 'id' | 'createdAt' | 'updatedAt'> = {
+    const clonedPayload: Omit<
+      User,
+      'id' | 'createdAt' | 'updatedAt' | 'newPassword'
+    > = {
       ...createProfileDto,
       role: {
         name: 'User',
@@ -58,12 +61,15 @@ export class UsersService {
   ): Promise<User | null> {
     const clonedPayload = { ...payload };
 
-    if (
-      clonedPayload.password &&
-      clonedPayload.previousPassword !== clonedPayload.password
-    ) {
+    if (clonedPayload.newPassword) {
+      console.log('REGEN');
       const salt = await bcrypt.genSalt();
-      clonedPayload.password = await bcrypt.hash(clonedPayload.password, salt);
+      console.log(salt);
+      clonedPayload.password = await bcrypt.hash(
+        clonedPayload.newPassword,
+        salt,
+      );
+      delete clonedPayload.newPassword;
     }
 
     if (clonedPayload.email) {

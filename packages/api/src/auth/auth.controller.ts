@@ -28,6 +28,7 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 import { LoginResponseType } from './types/login-response.type';
+import { JwtPayloadType } from './strategies/types/jwt-payload.type';
 
 class TokenResponse {
   @ApiProperty({
@@ -145,12 +146,10 @@ export class AuthController {
   @Post('logout')
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async logout(@AuthorizedUser() user: User): Promise<void> {
-    console.log(user);
-
-    // await this.service.logout({
-    //   sessionId: user.,
-    // });
+  public async logout(@AuthorizedUser() user: JwtPayloadType): Promise<void> {
+    await this.service.logout({
+      sessionId: user.sessionId,
+    });
   }
 
   @ApiOperation({
@@ -169,10 +168,10 @@ export class AuthController {
   @Auth
   @HttpCode(HttpStatus.OK)
   public update(
-    @Request() request,
+    @AuthorizedUser() user: JwtPayloadType,
     @Body() userDto: AuthUpdateDto,
   ): Promise<NullableType<User>> {
-    return this.service.update(request.user, userDto);
+    return this.service.update(user, userDto);
   }
 
   @ApiOperation({

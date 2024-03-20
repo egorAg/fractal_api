@@ -52,7 +52,7 @@ export class AuthUpdateDto {
   @IsOptional()
   @IsNotEmpty()
   @MinLength(6)
-  whatsapp?: string;
+  phone?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

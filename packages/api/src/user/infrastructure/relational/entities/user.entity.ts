@@ -1,7 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { RoleEntity } from 'src/roles/infrastructure/persistence/relational/entities/role.entity';
 import {
-  AfterLoad,
   BaseEntity,
   Column,
   CreateDateColumn,
@@ -33,15 +32,10 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: true })
   @Exclude({ toPlainOnly: true })
-  public password?: string;
+  public password: string;
 
   @Exclude({ toPlainOnly: true })
   public previousPassword?: string;
-
-  @AfterLoad()
-  public loadPreviousPassword(): void {
-    this.previousPassword = this.password;
-  }
 
   @Index()
   @Column({ type: String })

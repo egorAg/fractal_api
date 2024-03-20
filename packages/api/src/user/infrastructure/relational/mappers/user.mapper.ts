@@ -9,7 +9,6 @@ export class UserMapper {
     user.email = raw.email;
     user.role = raw.role;
     user.password = raw.password;
-    user.previousPassword = raw.previousPassword;
     user.name = raw.name;
     user.surname = raw.surname;
     user.telegram = raw.telegram;
@@ -36,7 +35,6 @@ export class UserMapper {
     user.email = raw.email;
     user.role = role;
     user.password = raw.password;
-    user.previousPassword = raw.previousPassword;
     user.name = raw.name;
     user.surname = raw.surname;
     user.telegram = raw.telegram;

@@ -5,7 +5,7 @@ import { User } from '../domain/user';
 
 export abstract class UserRepository {
   abstract create(
-    data: Omit<User, 'id' | 'createdAt' | 'updatedAt'>,
+    data: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'newPassword'>,
   ): Promise<User>;
 
   abstract findOne(fields: EntityCondition<User>): Promise<NullableType<User>>;

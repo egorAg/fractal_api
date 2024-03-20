@@ -26,10 +26,10 @@ export class User {
   role?: Role;
 
   @Exclude({ toPlainOnly: true })
-  password?: string;
+  password: string;
 
   @Exclude({ toPlainOnly: true })
-  previousPassword?: string;
+  newPassword?: string;
 
   @ApiProperty({
     example: 'Test',

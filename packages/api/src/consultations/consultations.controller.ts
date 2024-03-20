@@ -49,13 +49,17 @@ export class ConsultationsController {
     name: 'phone',
     description: 'User phone number',
   })
+  @ApiQuery({
+    name: 'email',
+    description: 'User email',
+  })
   @Auth
   @Get('register')
   public async register(
     @AuthorizedUser() user: UserSession,
-    @Query() payload: { id: string; phone: string },
+    @Query() payload: { id: string; phone: string; email: string },
   ) {
-    const { id, phone } = payload;
-    await this.service.register(user, id, phone);
+    const { id, phone, email } = payload;
+    await this.service.register(user, id, phone, email);
   }
 }

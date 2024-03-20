@@ -20,7 +20,12 @@ export class ConsultationsService {
     return this.repository.findAll();
   }
 
-  public async register(user: UserSession, id: string, phone: string) {
+  public async register(
+    user: UserSession,
+    id: string,
+    phone: string,
+    email: string,
+  ) {
     const consultation = await this.repository.findOne({
       id: id,
     });
@@ -31,8 +36,7 @@ export class ConsultationsService {
 
     this.telegramService.sendNewConsultationNotification(
       consultation.name,
-      // user.email,
-      'asd',
+      email,
       phone,
     );
   }
