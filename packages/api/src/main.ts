@@ -12,6 +12,7 @@ import { AppModule } from './app.module';
 import { AllConfigType } from './config/config.type';
 import { ResolvePromisesInterceptor } from './utils/serializer.interceptor';
 import validationOptions from './utils/validation-options';
+import { json } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -19,7 +20,7 @@ async function bootstrap() {
   });
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   const configService = app.get(ConfigService<AllConfigType>);
-
+  app.use(json({ limit: '11mb' }));
   app.enableShutdownHooks();
   app.setGlobalPrefix(
     configService.getOrThrow('app.apiPrefix', { infer: true }),

@@ -17,6 +17,8 @@ import telegramConfig from './telegram/config/telegram.config';
 import { TelegramModule } from './telegram/telegram.module';
 import { TopicsModule } from './topics/topics.module';
 import { UserModule } from './user/user.module';
+import { RuneModule } from './runes/rune.module';
+import { AlgorithmsModule } from './algorithms/algorithms.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { UserModule } from './user/user.module';
     CommentsModule,
     SystemModule,
     ContentModule,
+    RuneModule,
+    AlgorithmsModule,
   ],
 })
 export class AppModule {}

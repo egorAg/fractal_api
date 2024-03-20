@@ -17,7 +17,7 @@ export class ContentController {
   }
   @ApiOperation({
     summary: 'Values',
-    description: 'Get all values',
+    description: 'Get all RuneConditions',
   })
   @Get('/value')
   public async getAllValues() {
